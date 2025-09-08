@@ -1,206 +1,393 @@
-// frontend/src/App.js
-import React from 'react';
+// frontend/App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
-import CompanyManager from './components/CompanyManager';
-import EmployeeManager from './components/EmployeeManager';
-import CreatorPanel from './components/CreatorPanel';
-import SurveyTaking from './components/SurveyTaking';
-import './App.css';
 
-// Use environment variable or fallback
-const RAW_API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+// Environment variable handling with better debugging
+const RAW_API_BASE = process.env.REACT_APP_API_URL || 'https://survey-project-ok7e.onrender.com';
 const API = `${RAW_API_BASE.replace(/\/$/, '')}/api`;
 
-function Login({ setToken, setRole, setUsernameGlobal }) {
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [error, setError] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
+// Debug logging - remove in production
+console.log('Environment check:', {
+  nodeEnv: process.env.NODE_ENV,
+  apiUrl: process.env.REACT_APP_API_URL,
+  rawApiBase: RAW_API_BASE,
+  finalApi: API
+});
+
+function Login({ setToken, setRole }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+
     try {
+      console.log('Attempting login to:', `${API}/login`);
       const res = await axios.post(`${API}/login`, { username, password });
-      setToken(res.data.token);
-      setRole(res.data.role);
-      setUsernameGlobal(username);
+      
+      console.log('Login response:', res.data);
+      
+      // Extract token and role correctly based on your backend response
+      const { token, user } = res.data;
+      
+      if (token && user) {
+        setToken(token);
+        setRole(user.role); // Changed from res.data.role to res.data.user.role
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', user.role);
+      } else {
+        setError('Invalid response from server');
+      }
     } catch (err) {
-      setError(err?.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error:', err);
+      console.error('Error response:', err.response?.data);
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="app-container">
-      <div className="form-container" style={{ maxWidth: '400px', margin: '5rem auto' }}>
-        <h1 className="form-title">Welcome Back</h1>
-        <p className="page-subtitle">Sign in to your Survey Management account</p>
+    <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px' }}>
+      <div style={{ 
+        background: 'white', 
+        padding: '30px', 
+        borderRadius: '8px', 
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)' 
+      }}>
+        <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Welcome Back</h2>
+        <p style={{ textAlign: 'center', color: '#666', marginBottom: '30px' }}>
+          Sign in to your Survey Management account
+        </p>
+        
         <form onSubmit={handleLogin}>
-          <div className="form-field">
-            <label className="form-label">Username</label>
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+              Username
+            </label>
             <input 
-              placeholder="Enter your username" 
+              placeholder="Username" 
               value={username} 
               onChange={e => setUsername(e.target.value)}
+              disabled={loading}
+              style={{
+                width: '100%',
+                padding: '12px',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                fontSize: '16px'
+              }}
               required
             />
           </div>
-          <div className="form-field">
-            <label className="form-label">Password</label>
+          
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+              Password
+            </label>
             <input 
               type="password" 
-              placeholder="Enter your password" 
+              placeholder="Password" 
               value={password} 
               onChange={e => setPassword(e.target.value)}
+              disabled={loading}
+              style={{
+                width: '100%',
+                padding: '12px',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                fontSize: '16px'
+              }}
               required
             />
           </div>
+          
           <button 
             type="submit" 
-            className="btn btn-primary btn-lg" 
             disabled={loading}
-            style={{ width: '100%', marginTop: 'var(--space-md)' }}
+            style={{
+              width: '100%',
+              padding: '15px',
+              background: loading ? '#ccc' : '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              fontSize: '16px',
+              cursor: loading ? 'not-allowed' : 'pointer'
+            }}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
-        {error && <div className="alert alert-error">{error}</div>}
-        <div style={{ textAlign: 'center', marginTop: 'var(--space-lg)', fontSize: '0.875rem', color: 'var(--on-surface-variant)' }}>
+        
+        {error && (
+          <div style={{
+            marginTop: '15px',
+            padding: '10px',
+            background: '#f8d7da',
+            border: '1px solid #f5c6cb',
+            borderRadius: '4px',
+            color: '#721c24'
+          }}>
+            {error}
+          </div>
+        )}
+        
+        <div style={{
+          marginTop: '20px',
+          textAlign: 'center',
+          fontSize: '14px',
+          color: '#666'
+        }}>
           Demo credentials: admin/admin123 or creator/creator123
         </div>
+        
+        {/* Debug info - remove in production */}
+        <div style={{
+          marginTop: '20px',
+          padding: '10px',
+          background: '#f8f9fa',
+          border: '1px solid #dee2e6',
+          borderRadius: '4px',
+          fontSize: '12px',
+          color: '#6c757d'
+        }}>
+          API URL: {API}
+        </div>
       </div>
+    </div>
+  );
+}
+
+function SurveyList({ token }) {
+  const [surveys, setSurveys] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  React.useEffect(() => {
+    if (!token) return;
+    
+    axios.get(`${API}/surveys`, { 
+      headers: { Authorization: `Bearer ${token}` } 
+    })
+    .then(res => {
+      setSurveys(res.data);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error('Error fetching surveys:', err);
+      setError('Failed to load surveys');
+      setLoading(false);
+    });
+  }, [token]);
+
+  if (loading) return <div>Loading surveys...</div>;
+  if (error) return <div style={{color: 'red'}}>{error}</div>;
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2>Surveys</h2>
+      {surveys.length === 0 ? (
+        <p>No surveys available.</p>
+      ) : (
+        <ul>
+          {surveys.map(s => (
+            <li key={s.id}>
+              <Link to={`/survey/${s.id}`}>{s.title}</Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function SurveyDetail({ token, role }) {
+  const { id } = useParams();
+  const [survey, setSurvey] = useState(null);
+  const [answers, setAnswers] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  React.useEffect(() => {
+    if (!token || !id) return;
+    
+    axios.get(`${API}/surveys/${id}`, { 
+      headers: { Authorization: `Bearer ${token}` } 
+    })
+    .then(res => {
+      setSurvey(res.data);
+      setAnswers(res.data.questions.map(q => ({ question_id: q.id, answer: '' })));
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error('Error fetching survey:', err);
+      setError('Failed to load survey');
+      setLoading(false);
+    });
+  }, [id, token]);
+
+  if (loading) return <div>Loading survey...</div>;
+  if (error) return <div style={{color: 'red'}}>{error}</div>;
+  if (!survey) return <div>Survey not found.</div>;
+
+  const handleChange = (i, val) => {
+    setAnswers(ans => ans.map((a, idx) => idx === i ? { ...a, answer: val } : a));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API}/surveys/${id}/response`, { answers }, { 
+        headers: { Authorization: `Bearer ${token}` } 
+      });
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Error submitting survey:', err);
+      setError('Failed to submit survey');
+    }
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h3>{survey.title}</h3>
+      <p>{survey.description}</p>
+      {role === 'respondent' && !submitted && (
+        <form onSubmit={handleSubmit}>
+          {survey.questions.map((q, i) => (
+            <div key={q.id} style={{ marginBottom: '20px' }}>
+              <label>{q.text}</label>
+              {q.type === 'rating' ? (
+                <input 
+                  type="number" 
+                  min="1" 
+                  max="5" 
+                  value={answers[i]?.answer} 
+                  onChange={e => handleChange(i, e.target.value)} 
+                />
+              ) : (
+                <input 
+                  value={answers[i]?.answer} 
+                  onChange={e => handleChange(i, e.target.value)} 
+                />
+              )}
+            </div>
+          ))}
+          <button type="submit">Submit</button>
+        </form>
+      )}
+      {submitted && <div style={{color: 'green'}}>Thank you for your response!</div>}
+      {error && <div style={{color: 'red'}}>{error}</div>}
     </div>
   );
 }
 
 function AdminPanel({ token }) {
-  const [tab, setTab] = React.useState('companies');
-  const [users, setUsers] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState('');
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   React.useEffect(() => {
-    if (tab === 'users') {
-      setLoading(true);
-      setError('');
-      axios.get(`${API}/users`, { headers: { Authorization: `Bearer ${token}` } })
-        .then(res => setUsers(res.data))
-        .catch(() => setError('Failed to load users.'))
-        .finally(() => setLoading(false));
-    }
-  }, [token, tab]);
+    if (!token) return;
+    
+    axios.get(`${API}/users`, { 
+      headers: { Authorization: `Bearer ${token}` } 
+    })
+    .then(res => {
+      setUsers(res.data);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error('Error fetching users:', err);
+      setError('Failed to load users');
+      setLoading(false);
+    });
+  }, [token]);
+
+  if (loading) return <div>Loading users...</div>;
+  if (error) return <div style={{color: 'red'}}>{error}</div>;
 
   return (
-    <div className="app-container">
-      <div className="page-header">
-        <h1 className="page-title">Admin Dashboard</h1>
-        <p className="page-subtitle">Manage companies, employees, and system users</p>
-      </div>
-      
-      <div className="tab-container">
-        <div className="tab-list">
-          <button 
-            className={`tab-button ${tab === 'companies' ? 'active' : ''}`}
-            onClick={() => setTab('companies')}
-          >
-            Companies
-          </button>
-          <button 
-            className={`tab-button ${tab === 'employees' ? 'active' : ''}`}
-            onClick={() => setTab('employees')}
-          >
-            Employees
-          </button>
-          <button 
-            className={`tab-button ${tab === 'users' ? 'active' : ''}`}
-            onClick={() => setTab('users')}
-          >
-            System Users
-          </button>
-        </div>
-        
-        {tab === 'users' && (
-          <div>
-            {loading ? (
-              <div className="loading">Loading users...</div>
-            ) : error ? (
-              <div className="alert alert-error">{error}</div>
-            ) : (
-              <div className="card-grid">
-                {users.map(u => (
-                  <div className="card" key={u.id}>
-                    <div className="card-header">
-                      <h3 className="card-title">{u.username}</h3>
-                    </div>
-                    <div className="card-content">
-                      <span style={{ 
-                        background: u.role === 'admin' ? 'var(--error)' : 'var(--secondary)',
-                        color: 'white',
-                        padding: '4px 8px',
-                        borderRadius: 'var(--radius-xs)',
-                        fontSize: '0.75rem',
-                        fontWeight: '500',
-                        textTransform: 'uppercase'
-                      }}>
-                        {u.role}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-        {tab === 'companies' && <CompanyManager token={token} />}
-        {tab === 'employees' && <EmployeeManager token={token} />}
-      </div>
+    <div style={{ padding: '20px' }}>
+      <h2>Admin Panel</h2>
+      {users.length === 0 ? (
+        <p>No users found.</p>
+      ) : (
+        <ul>
+          {users.map(u => (
+            <li key={u.id}>{u.username} ({u.role})</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
 
 function App() {
-  const [token, setToken] = React.useState(null);
-  const [role, setRole] = React.useState(null);
-  const [username, setUsernameGlobal] = React.useState('');
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
+  const [role, setRole] = useState(() => localStorage.getItem('role'));
+
+  const handleLogout = () => {
+    setToken(null);
+    setRole(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+  };
 
   return (
     <Router>
-      {token && (
-        <nav className="nav">
-          <div className="nav-content">
-            <div className="nav-links">
-              <Link to="/" className="nav-link">🏠 Home</Link>
-              {role === 'admin' && <Link to="/admin" className="nav-link">👔 Admin Panel</Link>}
-              {role === 'creator' && <Link to="/creator" className="nav-link">📝 Creator Panel</Link>}
-            </div>
-            <div className="nav-user">
-              <span>👤 {username} ({role})</span>
+      <nav style={{ 
+        padding: '10px 20px', 
+        background: '#f8f9fa', 
+        borderBottom: '1px solid #dee2e6',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <Link to="/" style={{ textDecoration: 'none', fontWeight: 'bold' }}>
+          Survey Management
+        </Link>
+        <div>
+          {token && (
+            <>
+              <span style={{ marginRight: '15px' }}>Welcome, {role}!</span>
               <button 
-                className="btn btn-outline btn-sm"
-                onClick={() => { setToken(null); setRole(null); setUsernameGlobal(''); }}
+                onClick={handleLogout}
+                style={{
+                  padding: '5px 15px',
+                  background: '#dc3545',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
               >
-                Sign Out
+                Logout
               </button>
-            </div>
-          </div>
-        </nav>
-      )}
+            </>
+          )}
+        </div>
+      </nav>
       
       <Routes>
-        <Route path="/survey/:token" element={<SurveyTaking />} />
-        <Route path="/" element={
-          token && role === 'admin'
-            ? <Navigate to="/admin" />
-            : token && role === 'creator'
-              ? <Navigate to="/creator" />
-              : <Login setToken={setToken} setRole={setRole} setUsernameGlobal={setUsernameGlobal} />
-        } />
-        <Route path="/admin" element={token && role === 'admin' ? <AdminPanel token={token} /> : <Navigate to="/" />} />
-        <Route path="/creator" element={token && role === 'creator' ? <CreatorPanel token={token} /> : <Navigate to="/" />} />
+        <Route 
+          path="/" 
+          element={token ? <SurveyList token={token} /> : <Login setToken={setToken} setRole={setRole} />} 
+        />
+        <Route 
+          path="/survey/:id" 
+          element={token ? <SurveyDetail token={token} role={role} /> : <Navigate to="/" />} 
+        />
+        <Route 
+          path="/admin" 
+          element={token && role === 'admin' ? <AdminPanel token={token} /> : <Navigate to="/" />} 
+        />
       </Routes>
     </Router>
   );
