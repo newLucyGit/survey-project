@@ -1,0 +1,28 @@
+{
+  "survey_token": "Y45GLAv1ICIn8bgJt7FKkFL7K8FikkzA",
+  "feedback_type": "self",
+  "employee_email": "bob@acme.com",
+  "auth_code": "M5J5FSE1",
+  "responses": [
+    {
+      "question_id": 18,
+      "response_text": "I need to develop better strategic thinking and improve my ability to communicate vision to my team members."
+    },
+    {
+      "question_id": 14,
+      "response_text": "Good"
+    },
+    {
+      "question_id": 1,
+      "response_text": "Good"
+    },
+    {
+      "question_id": 2,
+      "response_text": "I should work on being more concise in my explanations and improving my presentation skills for executive meetings."
+    },
+    {
+      "question_id": 3,
+      "response_text": "Excellent"
+    }
+  ]
+}

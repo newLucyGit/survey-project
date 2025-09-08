@@ -1,0 +1,10 @@
+# Use official Node.js image for backend
+FROM node:18-alpine
+WORKDIR /app
+COPY backend/package.json ./
+# Install build tools for native modules (sqlite3 fallback build)
+RUN apk add --no-cache python3 make g++ \
+	&& npm install
+COPY backend/. .
+EXPOSE 5000
+CMD ["npm", "start"]

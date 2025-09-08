@@ -1,0 +1,59 @@
+{
+  "title": "ACME Corp 360-Degree Feedback Survey",
+  "description": "Comprehensive 360-degree feedback survey for ACME Corp employees to evaluate leadership, communication, teamwork, and performance",
+  "company_id": 1,
+  "survey_type": "both",
+  "start_date": "2025-08-31T00:00:00.000Z",
+  "end_date": "2025-09-30T23:59:59.000Z",
+  "feedback_types": [
+    {
+      "type": "self",
+      "title": "Self Assessment",
+      "description": "Evaluate your own performance and development areas",
+      "questions": [
+        { "id": 2, "position": 1 },
+        { "id": 15, "position": 2 },
+        { "id": 6, "position": 3 },
+        { "id": 9, "position": 4 },
+        { "id": 3, "position": 5 }
+      ]
+    },
+    {
+      "type": "manager",
+      "title": "Manager Feedback",
+      "description": "Feedback from direct manager",
+      "questions": [
+        { "id": 22, "position": 1 },
+        { "id": 2, "position": 2 },
+        { "id": 6, "position": 3 },
+        { "id": 7, "position": 4 },
+        { "id": 12, "position": 5 },
+        { "id": 8, "position": 6 }
+      ]
+    },
+    {
+      "type": "peer",
+      "title": "Peer Feedback",
+      "description": "Feedback from colleagues and team members",
+      "questions": [
+        { "id": 4, "position": 1 },
+        { "id": 1, "position": 2 },
+        { "id": 15, "position": 3 },
+        { "id": 21, "position": 4 },
+        { "id": 20, "position": 5 }
+      ]
+    },
+    {
+      "type": "reportee",
+      "title": "Reportee Feedback",
+      "description": "Feedback from direct reports",
+      "questions": [
+        { "id": 22, "position": 1 },
+        { "id": 2, "position": 2 },
+        { "id": 1, "position": 3 },
+        { "id": 18, "position": 4 },
+        { "id": 3, "position": 5 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "participants": [
+    {
+      "employee_id": 1,
+      "feedback_types": ["self", "reportee"]
+    },
+    {
+      "employee_id": 2,
+      "feedback_types": ["self", "manager", "peer"]
+    },
+    {
+      "employee_id": 5,
+      "feedback_types": ["self", "manager", "peer"]
+    },
+    {
+      "employee_id": 6,
+      "feedback_types": ["self", "manager", "peer", "reportee"]
+    },
+    {
+      "employee_id": 7,
+      "feedback_types": ["self", "manager", "peer", "reportee"]
+    },
+    {
+      "employee_id": 8,
+      "feedback_types": ["self", "manager", "peer"]
+    },
+    {
+      "employee_id": 9,
+      "feedback_types": ["self", "manager", "peer"]
+    }
+  ]
+}

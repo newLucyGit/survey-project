@@ -1,0 +1,28 @@
+{
+  "survey_token": "Y45GLAv1ICIn8bgJt7FKkFL7K8FikkzA",
+  "feedback_type": "self",
+  "employee_email": "alice@acme.com",
+  "auth_code": "ZDARO0XQ",
+  "responses": [
+    {
+      "question_id": 18,
+      "response_text": "I need to continue developing my strategic thinking and long-term vision capabilities to better guide the organization."
+    },
+    {
+      "question_id": 14,
+      "response_text": "Good"
+    },
+    {
+      "question_id": 1,
+      "response_text": "Excellent"
+    },
+    {
+      "question_id": 2,
+      "response_text": "I should focus on improving my active listening skills and providing more frequent feedback to team members."
+    },
+    {
+      "question_id": 3,
+      "response_text": "Good"
+    }
+  ]
+}

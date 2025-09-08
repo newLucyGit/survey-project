@@ -1,0 +1,28 @@
+{
+  "survey_token": "Y45GLAv1ICIn8bgJt7FKkFL7K8FikkzA",
+  "feedback_type": "reportee",
+  "employee_email": "alice@acme.com",
+  "auth_code": "ZDARO0XQ",
+  "responses": [
+    {
+      "question_id": 7,
+      "response_text": "Bob successfully resolved a complex client conflict by implementing a systematic approach that involved all stakeholders and resulted in improved customer satisfaction."
+    },
+    {
+      "question_id": 12,
+      "response_text": "Bob should continue developing his delegation skills and strategic planning abilities to better support his growing team."
+    },
+    {
+      "question_id": 11,
+      "response_text": "Excellent"
+    },
+    {
+      "question_id": 13,
+      "response_text": "Good"
+    },
+    {
+      "question_id": 10,
+      "response_text": "Good"
+    }
+  ]
+}

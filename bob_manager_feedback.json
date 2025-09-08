@@ -1,0 +1,32 @@
+{
+  "survey_token": "Y45GLAv1ICIn8bgJt7FKkFL7K8FikkzA",
+  "feedback_type": "manager",
+  "employee_email": "bob@acme.com",
+  "auth_code": "M5J5FSE1",
+  "responses": [
+    {
+      "question_id": 19,
+      "response_text": "Alice brilliantly resolved the client retention crisis by implementing a comprehensive customer feedback system that increased satisfaction by 40%."
+    },
+    {
+      "question_id": 4,
+      "response_text": "Alice should continue developing her mentoring abilities and cross-functional collaboration skills to better support organizational growth."
+    },
+    {
+      "question_id": 5,
+      "response_text": "Excellent"
+    },
+    {
+      "question_id": 6,
+      "response_text": "Excellent"
+    },
+    {
+      "question_id": 9,
+      "response_text": "Excellent"
+    },
+    {
+      "question_id": 8,
+      "response_text": "Alice could focus on developing more structured performance metrics and improving delegation of operational tasks."
+    }
+  ]
+}

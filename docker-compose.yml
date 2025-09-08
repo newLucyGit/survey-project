@@ -1,0 +1,20 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "5000:5000"
+    restart: always
+    environment:
+      - FRONTEND_BASE_URL=http://localhost:3000
+      - DEMO_AUTO_SEED=true
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:80"
+    restart: always
+    depends_on:
+      - backend

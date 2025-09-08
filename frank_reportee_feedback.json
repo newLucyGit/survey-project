@@ -1,0 +1,28 @@
+{
+  "survey_token": "Y45GLAv1ICIn8bgJt7FKkFL7K8FikkzA",
+  "feedback_type": "reportee",
+  "employee_email": "frank@acme.com",
+  "auth_code": "FPS5QFY2",
+  "responses": [
+    {
+      "question_id": 7,
+      "response_text": "Alice effectively handled the Q3 budget crisis by implementing cost-saving measures while maintaining team morale and productivity."
+    },
+    {
+      "question_id": 12,
+      "response_text": "Alice should continue developing her technical knowledge and cross-departmental relationship building to enhance her strategic decision-making."
+    },
+    {
+      "question_id": 11,
+      "response_text": "Excellent"
+    },
+    {
+      "question_id": 13,
+      "response_text": "Good"
+    },
+    {
+      "question_id": 10,
+      "response_text": "Excellent"
+    }
+  ]
+}
