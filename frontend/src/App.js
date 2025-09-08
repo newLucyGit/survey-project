@@ -1,4 +1,4 @@
-
+// frontend/src/App.js
 import React from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
@@ -8,7 +8,9 @@ import CreatorPanel from './components/CreatorPanel';
 import SurveyTaking from './components/SurveyTaking';
 import './App.css';
 
-const API = 'http://localhost:5000/api';
+// Use environment variable or fallback
+const RAW_API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API = `${RAW_API_BASE.replace(/\/$/, '')}/api`;
 
 function Login({ setToken, setRole, setUsernameGlobal }) {
   const [username, setUsername] = React.useState('');

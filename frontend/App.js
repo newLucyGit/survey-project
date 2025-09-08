@@ -1,8 +1,11 @@
+// frontend/App.js
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const API = 'http://localhost:5000/api';
+// Use environment variable or fallback to localhost
+const RAW_API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API = `${RAW_API_BASE.replace(/\/$/, '')}/api`;
 
 function Login({ setToken, setRole }) {
   const [username, setUsername] = useState('');
@@ -34,6 +37,7 @@ function Login({ setToken, setRole }) {
 function SurveyList({ token }) {
   const [surveys, setSurveys] = useState([]);
   React.useEffect(() => {
+    if (!token) return;
     axios.get(`${API}/surveys`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => setSurveys(res.data));
   }, [token]);
@@ -47,18 +51,23 @@ function SurveyList({ token }) {
   );
 }
 
-function SurveyDetail({ token, id, role }) {
+function SurveyDetail({ token, role }) {
+  const { id } = useParams();
   const [survey, setSurvey] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [submitted, setSubmitted] = useState(false);
+
   React.useEffect(() => {
+    if (!token || !id) return;
     axios.get(`${API}/surveys/${id}`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         setSurvey(res.data);
         setAnswers(res.data.questions.map(q => ({ question_id: q.id, answer: '' })));
       });
   }, [id, token]);
+
   if (!survey) return <div>Loading...</div>;
+
   const handleChange = (i, val) => {
     setAnswers(ans => ans.map((a, idx) => idx === i ? { ...a, answer: val } : a));
   };
@@ -67,6 +76,7 @@ function SurveyDetail({ token, id, role }) {
     await axios.post(`${API}/surveys/${id}/response`, { answers }, { headers: { Authorization: `Bearer ${token}` } });
     setSubmitted(true);
   };
+
   return (
     <div>
       <h3>{survey.title}</h3>
@@ -94,6 +104,7 @@ function SurveyDetail({ token, id, role }) {
 function AdminPanel({ token }) {
   const [users, setUsers] = useState([]);
   React.useEffect(() => {
+    if (!token) return;
     axios.get(`${API}/users`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => setUsers(res.data));
   }, [token]);
@@ -118,7 +129,7 @@ function App() {
       </nav>
       <Routes>
         <Route path="/" element={token ? <SurveyList token={token} /> : <Login setToken={setToken} setRole={setRole} />} />
-        <Route path="/survey/:id" element={token ? <SurveyDetail token={token} role={role} id={window.location.pathname.split('/').pop()} /> : <Navigate to="/" />} />
+        <Route path="/survey/:id" element={token ? <SurveyDetail token={token} role={role} /> : <Navigate to="/" />} />
         <Route path="/admin" element={token && role === 'admin' ? <AdminPanel token={token} /> : <Navigate to="/" />} />
       </Routes>
     </Router>
