@@ -18,6 +18,17 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { body, param, query, validationResult } = require('express-validator');
 // ---------- Postgres (Supabase) DB wrapper (replaces sqlite3) ----------
+
+const dotenv = require("dotenv");
+dotenv.config();
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(helmet());
+
 const { Pool } = require('pg');
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
