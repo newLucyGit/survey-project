@@ -1,23 +1,34 @@
 {
-  "name": "ldp-survey-backend",
+  "name": "survey-backend",
   "version": "1.0.0",
-  "description": "Backend for LDP Survey Management App",
+  "description": "Survey Management Backend API",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "express-validator": "^7.0.1",
-    "helmet": "^7.0.0",
-    "jsonwebtoken": "^9.0.0",
-    "pg": "^8.10.0"
+    "cors": "^2.8.5",
+    "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3",
+    "express-validator": "^7.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "survey",
+    "api",
+    "nodejs",
+    "express",
+    "postgresql"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
 }
