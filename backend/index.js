@@ -17,7 +17,7 @@ const pool = new Pool({
 // Middleware
 app.use(cors({
   origin: [
-    'https://survey-project-three.vercel.app/', // Replace with your actual Vercel URL
+    'https://survey-project-three.vercel.app', // Replace with your actual Vercel URL
     'http://localhost:3000',
     'http://localhost:3001'
   ],
